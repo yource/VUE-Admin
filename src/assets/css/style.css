@@ -1,0 +1,40 @@
+.el-header{
+    padding:0;
+}
+.el-badge__content{
+    border: none;
+}
+.el-scrollbar__wrap{
+    overflow-x: hidden;
+}
+.el-menu{
+    border: none;
+}
+.el-menu-item-group__title{
+    padding: 0;
+}
+.el-main{
+    padding: 0;
+}
+.el-aside{
+	transition: width 0.3s;
+}
+.asideMenuCon.el-menu--collapse.el-menu .el-tooltip,
+.asideMenuCon.el-menu--collapse.el-menu .el-submenu .el-submenu__title{
+    padding: 0 0 0 15px !important;
+}
+.asideMenuCon.el-menu--collapse.el-menu .el-submenu .el-submenu__title span,
+.asideMenuCon.el-menu--collapse.el-menu .el-submenu .el-submenu__title .el-icon-arrow-right{
+	display: none;
+}
+
+.asideMenuCon.el-menu--collapse.el-menu .el-menu-item,
+.asideMenuCon.el-menu--collapse.el-menu .el-submenu{
+	padding: 0 !important;
+	border-bottom: 1px solid #4c4b5d;
+}
+
+.asideMenuCon .el-submenu .el-menu-item{
+	min-width: 190px;
+	text-align: center;
+}
