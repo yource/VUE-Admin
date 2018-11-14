@@ -28,8 +28,3 @@ export default {
     }
 }
 </script>
-<style>
-#app{
-  background: rgb(240,242,245);
-}
-</style>

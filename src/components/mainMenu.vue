@@ -1,7 +1,7 @@
 <template>
     <div class="asideMenu">
         <el-scrollbar class="scrollbar">
-            <el-menu :default-active="$route.name" class="asideMenuCon" :collapse="isCollapse" background-color="#38374a" text-color="#fff" active-text-color="rgb(98,224,168)" :unique-opened="true">
+            <el-menu :default-active="$route.name" class="asideMenuCon" :collapse="isCollapse" background-color="#38374a" text-color="rgb(226, 226, 232)" active-text-color="rgb(98,224,168)" :unique-opened="true">
                 <div v-for="route in routes">
                     <el-submenu v-if="route.routes" :index="route.name" :key="route.name">
                         <template slot="title">

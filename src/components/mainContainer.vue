@@ -89,7 +89,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .mainContainer {
-    background: #eef0f7;
     height: 100%;
     overflow: hidden;
 }
@@ -97,7 +96,7 @@ export default {
 .tabs {
     height: 35px;
     padding-top: 5px;
-    padding-left: 10px;
+    padding-left: 15px;
     background: #e0e4ef;
     position: relative;
     border-bottom: 1px solid #ced5e5;
@@ -105,7 +104,7 @@ export default {
 
 .closeTabs {
     position: absolute;
-    right: 6px;
+    right: 10px;
     top: 3px;
     height: 30px;
     width: 30px;
@@ -171,10 +170,10 @@ export default {
 }
 
 .routerView {
-    height: calc(100% - 60px);
-    width: calc(100% - 20px);
+    height: calc(100% - 65px);
+    width: calc(100% - 30px);
     background: #fff;
-    margin: 10px auto 0;
-    box-shadow: 0 2px 8px #c7d1d6;
+    margin: 15px auto 0;
+    box-shadow: 0 2px 8px #c8c7d2;
 }
 </style>
