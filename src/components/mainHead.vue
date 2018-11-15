@@ -10,12 +10,8 @@
                         <el-button @click="openTodo" icon="el-icon-document"></el-button>
                     </el-badge>
                 </el-tooltip>
-                <el-tooltip effect="dark" content="站内信" placement="bottom">
-                    <el-badge :value="3">
-                        <el-button @click="openMessage1" icon="el-icon-message"></el-button>
-                    </el-badge>
                 </el-tooltip>
-                <el-tooltip effect="dark" content="系统通知" placement="bottom">
+                <el-tooltip effect="dark" content="未读消息" placement="bottom">
                     <el-badge :value="6">
                         <el-button @click="openMessage2" icon="el-icon-bell"></el-button>
                     </el-badge>
@@ -106,14 +102,14 @@ export default {
     .el-badge {
         height: 34px;
         margin-top: 14px;
-        width: 50px;
+        width: 45px;
         margin-right: 20px;
     }
 
     .el-button {
         border: none;
         height: 34px;
-        font-size: 28px;
+        font-size: 26px;
         background: none;
         color: #fff;
         padding: 0 14px;

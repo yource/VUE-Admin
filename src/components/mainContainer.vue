@@ -15,7 +15,7 @@
                 </el-tooltip>
             </div>
         </div>
-        <el-scrollbar class="routerView">
+        <el-scrollbar class="routerView" id="routerView">
             <router-view></router-view>
         </el-scrollbar>
     </div>
@@ -104,11 +104,11 @@ export default {
 
 .closeTabs {
     position: absolute;
-    right: 10px;
-    top: 3px;
+    right: 8px;
+    top: 5px;
     height: 30px;
     width: 30px;
-    font-size: 26px;
+    font-size: 22px;
     line-height: 30px;
     color: #abb0bf;
 

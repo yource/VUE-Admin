@@ -28,7 +28,7 @@ const routes = [{
     rightLevel: 0,
     component: () => import( /* webpackChunkName: "todo" */ './views/todo.vue')
 }, {
-    path: '/message/:tab',
+    path: '/message',
     name: 'message',
     name_cn: "消息通知",
     icon: "icon-message",
