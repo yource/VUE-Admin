@@ -33,7 +33,7 @@ export default {
     }),
     computed: {
         isCollapse() {
-            return !this.$store.state.expandMenu;
+            return !this.$store.state.menu.expandMenu;
         }
     },
     methods: {

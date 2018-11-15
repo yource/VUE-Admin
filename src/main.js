@@ -10,7 +10,7 @@ import Router from 'vue-router'
 import ElementUI from 'element-ui';
 import App from './App.vue';
 import {routeArray} from './routes';
-import store from './store';
+import store from './store/';
 
 Vue.use(ElementUI);
 Vue.use(Router);

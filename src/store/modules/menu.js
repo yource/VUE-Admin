@@ -1,19 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// 标记菜单是否展开
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default {
     state: {
-        // 标记左侧菜单是否展开
         expandMenu: true
     },
     mutations: {
         changeExpandMenu(state) {
             state.expandMenu = !state.expandMenu;
         }
-    },
-    actions: {
-
     }
-})
+}

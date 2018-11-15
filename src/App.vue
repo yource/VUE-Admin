@@ -23,7 +23,7 @@ export default {
     components: {mainHead, mainMenu, mainContainer},
     computed:{
         expandMenu(){
-            return this.$store.state.expandMenu;
+            return this.$store.state.menu.expandMenu;
         }
     }
 }
