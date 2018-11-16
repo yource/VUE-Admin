@@ -35,40 +35,11 @@
                     <i title="更多" class="el-icon-d-arrow-right"></i>
                 </div>
                 <ul>
-                    <li>
+                    <li v-for="(item,index) in todolist" v-if="index<5">
                         <div>
-                            <i class="el-icon-circle-check-outline"></i>
-                            <!-- <i class="el-icon-circle-checked"></i> -->
-                            <span class="ellipsis">待办事项1待办事项1待办事项1待办事项1</span>
-                            <i class="el-icon-delete"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <i class="el-icon-circle-check"></i>
-                            <span class="ellipsis checked">待办事项2待办事项1待办事项1待办事项1</span>
-                            <i class="el-icon-delete"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <i class="el-icon-circle-check-outline"></i>
-                            <span class="ellipsis">待办事项3待办事项1待办事项1待办事项1</span>
-                            <i class="el-icon-delete"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <i class="el-icon-circle-check-outline"></i>
-                            <span class="ellipsis">待办事项4待办事项1待办事项1待办事项1</span>
-                            <i class="el-icon-delete"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <i class="el-icon-circle-check-outline"></i>
-                            <span class="ellipsis">待办事项5待办事项1待办事项1待办事项1</span>
-                            <i class="el-icon-delete"></i>
+                            <i :class="item.done?'el-icon-circle-check-outline':'el-icon-circle-check'" @click="item.done=!item.done"></i>
+                            <span class="ellipsis" :class="{'checked':item.done}">{{item.content}}</span>
+                            <i class="el-icon-delete" @click="deleteTodo(item.id)"></i>
                         </div>
                     </li>
                 </ul>
@@ -93,9 +64,53 @@ export default {
     name: 'overview',
     created() {
         this.chartHeight = document.getElementById("routerView").offsetHeight - 390;
+        this.$store.dispatch('setChartDate');
     },
     mounted() {
-        this.initChart("chart");
+        this.chart = echarts.init(document.getElementById("chart"));
+        this.chart.setOption({
+            title: {
+                text: '日活跃用户数'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['男性用户', '女性用户'],
+                right: 20
+            },
+            grid: {
+                left: '2%',
+                right: '3%',
+                bottom: '5%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: getMonthDate()
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                    name: '男性用户',
+                    type: 'line',
+                    itemStyle: { color: "#8999ec" },
+                    smooth: true,
+                    areaStyle: {},
+                    data: this.$store.state.overview.chartData.male
+                },
+                {
+                    name: '女性用户',
+                    type: 'line',
+                    itemStyle: { color: "#ff8656" },
+                    smooth: true,
+                    areaStyle: {},
+                    data: this.$store.state.overview.chartData.female
+                }
+            ]
+        });
         window.onresize = () => {
             this.chart.resize();
         }
@@ -109,67 +124,44 @@ export default {
     data: () => ({
         chartHeight: "300",
         chart: null,
-        chartOption: null
+        deleteVisible:false
     }),
     computed: {
         isCollapse() {
             return !this.$store.state.menu.expandMenu;
+        },
+        chartData() {
+            return this.$store.state.overview.chartData;
+        },
+        todolist() {
+            return this.$store.state.todo.todoList
         }
     },
     methods: {
-        initChart(id) {
-            this.chart = echarts.init(document.getElementById(id));
-            this.chartOption = {
-                title: {
-                    text: '日活跃用户数'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['男性用户', '女性用户'],
-                    right: 20
-                },
-                grid: {
-                    left: '2%',
-                    right: '3%',
-                    bottom: '5%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: getMonthDate()
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                        name: '男性用户',
-                        type: 'line',
-                        itemStyle: { color: "#8999ec" },
-                        smooth: true,
-                        areaStyle: {},
-                        data: []
-                    },
-                    {
-                        name: '女性用户',
-                        type: 'line',
-                        itemStyle: { color: "#ff8656" },
-                        smooth: true,
-                        areaStyle: {},
-                        data: []
-                    }
-                ]
-            };
-            this.chart.setOption(this.chartOption);
+        deleteTodo(id) {
+            this.$store.commit('deleteTodo', id)
+        },
+        changeTodo(done) {
+            this.$store.commit('changeTodo', done)
         }
     },
     watch: {
-        "isCollapse" () {
-            setTimeout(()=>{
+        isCollapse() {
+            setTimeout(() => {
                 this.chart.resize();
             }, 220)
+        },
+        chartData() {
+            this.chart.setOption({
+                series: [{
+                    data: this.$store.state.overview.chartData.male
+                }, {
+                    data: this.$store.state.overview.chartData.female
+                }]
+            });
+        },
+        todolist() {
+            console.log(this.$store.state.todo.todoList[0])
         }
     }
 }
