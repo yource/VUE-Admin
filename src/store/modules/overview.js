@@ -9,7 +9,6 @@ export default {
     },
     mutations: {
         setChartDate(state, data) {
-            console.log("set")
             state.chartData = {
                 male:data.male,
                 female:data.female

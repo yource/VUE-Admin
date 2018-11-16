@@ -2,7 +2,7 @@
     <div class="overview">
         <section>
             <div class="welcome">
-                <img src="@/assets/images/user01.png" class="userPic">
+                <img src="@/assets/images/user01.png" class="userPic" @click="$router.push({name:'myinfo'})">
                 <p>欢迎超级管理员！</p>
                 <p>今天是您工作的第199天。</p>
             </div>
@@ -32,7 +32,7 @@
             <div class="todolist">
                 <div class="sectionTitle">
                     <span>待办事项</span>
-                    <i title="更多" class="el-icon-d-arrow-right"></i>
+                    <i title="更多" class="el-icon-d-arrow-right" @click="$router.push({name:'todo'})"></i>
                 </div>
                 <ul>
                     <li v-for="(item,index) in todolist" v-if="index<5">
@@ -159,9 +159,6 @@ export default {
                     data: this.$store.state.overview.chartData.female
                 }]
             });
-        },
-        todolist() {
-            console.log(this.$store.state.todo.todoList[0])
         }
     }
 }
