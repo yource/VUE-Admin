@@ -37,9 +37,16 @@
                 <ul>
                     <li v-for="(item,index) in todolist" v-if="index<5">
                         <div>
-                            <i :class="item.done?'el-icon-circle-check-outline':'el-icon-circle-check'" @click="item.done=!item.done"></i>
+                            <i :class="item.done?'el-icon-circle-check':'el-icon-circle-check-outline'" @click="item.done=!item.done"></i>
                             <span class="ellipsis" :class="{'checked':item.done}">{{item.content}}</span>
-                            <i class="el-icon-delete" @click="deleteTodo(item.id)"></i>
+                            <el-popover placement="left" v-model="item.showDel">
+                                <p style="line-height: 30px;">删除此条事项？</p>
+                                <div style="text-align: right; margin: 0">
+                                    <el-button size="mini" type="text" @click="item.showDel = false">取消</el-button>
+                                    <el-button type="text" size="mini" @click="item.showDel = false;deleteTodo(item.id)">确定</el-button>
+                                </div>
+                                <i slot="reference" class="el-icon-delete"></i>
+                            </el-popover>
                         </div>
                     </li>
                 </ul>
@@ -111,20 +118,19 @@ export default {
                 }
             ]
         });
-        window.onresize = () => {
-            this.chart.resize();
-        }
+        window.addEventListener("resize", this.chartResize);
     },
     beforeDestroy() {
         if (this.chart) {
             this.chart.dispose();
             this.chart = null;
         }
+        window.removeEventListener("resize", this.chartResize);
     },
     data: () => ({
         chartHeight: "300",
         chart: null,
-        deleteVisible:false
+        deleteVisible: false
     }),
     computed: {
         isCollapse() {
@@ -143,6 +149,12 @@ export default {
         },
         changeTodo(done) {
             this.$store.commit('changeTodo', done)
+        },
+        chartResize() {
+            this.chartHeight = document.getElementById("routerView").offsetHeight - 390;
+            setTimeout(() => {
+                this.chart.resize();
+            }, 20)
         }
     },
     watch: {
@@ -191,7 +203,6 @@ export default {
 
     .todolist {
         padding: 15px;
-        // background: #fbfbfd;
         box-shadow: 0 1px 3px #e7e8ec;
         border-radius: 5px;
         width: 50%;
@@ -217,6 +228,7 @@ export default {
 
                     >* {
                         vertical-align: middle;
+                        display: inline-block;
                     }
 
                     i.el-icon-circle-check-outline {
@@ -245,7 +257,7 @@ export default {
                         }
                     }
 
-                    >span {
+                    >span.ellipsis {
                         display: inline-block;
                         width: calc(100% - 72px);
 
@@ -344,7 +356,7 @@ export default {
 
     #chart {
         height: calc(100% - 350px);
-        min-height: 280px;
+        min-height: 240px;
         margin: 25px 15px 0;
     }
 }

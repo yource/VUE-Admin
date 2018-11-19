@@ -3,10 +3,25 @@ const chart = {
     female: [31366, 42104, 52934, 55012, 46910, 58902, 61002, 63021, 68403, 59304, 66394, 71023, 68302, 62934, 68392]
 }
 
+import axios from 'axios';
+
 export default {
     getChartDate(callback) {
-        setTimeout(() => {
-            callback(chart)
-        }, 100)
+        axios.get('/overview/chartData').then((response)=> {
+                if (response.code && response.code == 0) {
+
+                } else {
+                    this.$notify({
+                        message: response.info ? response.info :　"图表数据请求失败",
+                        type: 'warning'
+                    })
+                }
+            })
+            .catch((error)=> {
+                this.$notify({
+                    message: '图表数据请求失败',
+                    type: 'warning'
+                })
+            })
     }
 }
