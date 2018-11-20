@@ -69,11 +69,41 @@ function getMonthDate() {
 
 export default {
     name: 'overview',
+    data: () => ({
+        chartHeight: 300,
+        chart: null,
+        deleteVisible: false
+    }),
+    computed: {
+        isCollapse() {
+            return !this.$store.state.menu.expandMenu;
+        },
+        chartData() {
+            return this.$store.state.overview.chartData;
+        },
+        todolist() {
+            return this.$store.state.todo.todoList
+        }
+    },
+    methods: {
+        deleteTodo(id) {
+            this.$store.commit('deleteTodo', id)
+        },
+        changeTodo(done) {
+            this.$store.commit('changeTodo', done)
+        },
+        chartResize() {
+            this.chartHeight = document.getElementById("routerView").offsetHeight - 390;
+            setTimeout(() => {
+                this.chart.resize();
+            }, 20)
+        }
+    },
     created() {
         this.chartHeight = document.getElementById("routerView").offsetHeight - 390;
-        this.$store.dispatch('setChartDate');
     },
     mounted() {
+        // 图表初始化
         this.chart = echarts.init(document.getElementById("chart"));
         this.chart.setOption({
             title: {
@@ -103,7 +133,7 @@ export default {
             series: [{
                     name: '男性用户',
                     type: 'line',
-                    itemStyle: { color: "#8999ec" },
+                    itemStyle: { color: "rgba(50,153,243,0.5)" },
                     smooth: true,
                     areaStyle: {},
                     data: this.$store.state.overview.chartData.male
@@ -111,58 +141,50 @@ export default {
                 {
                     name: '女性用户',
                     type: 'line',
-                    itemStyle: { color: "#ff8656" },
+                    itemStyle: { color: "rgb(255,134,86)" },
                     smooth: true,
                     areaStyle: {},
                     data: this.$store.state.overview.chartData.female
                 }
             ]
         });
+        // 如果vuex中没有数据，则通过接口获取
+        if (this.chartData.male.length == 0) {
+            this.chart.showLoading();
+            this.$ajax.get('/api/overview/chartData').then((response) => {
+                this.chart.hideLoading();
+                response = response.data;
+                if (response.code == "0") {
+                    this.$store.commit('setChartDate', response.data)
+                } else {
+                    this.$notify.error({
+                        title: "错误",
+                        message: response.info ? response.info : "图表数据请求失败",
+                        duration: 2000
+                    })
+                }
+            }).catch((error) => {
+                this.$notify.error({ title: "错误", message: '图表数据请求失败'})
+            })
+        }
         window.addEventListener("resize", this.chartResize);
     },
     beforeDestroy() {
+        // 注销echarts图表和事件监听
         if (this.chart) {
             this.chart.dispose();
             this.chart = null;
         }
         window.removeEventListener("resize", this.chartResize);
     },
-    data: () => ({
-        chartHeight: "300",
-        chart: null,
-        deleteVisible: false
-    }),
-    computed: {
-        isCollapse() {
-            return !this.$store.state.menu.expandMenu;
-        },
-        chartData() {
-            return this.$store.state.overview.chartData;
-        },
-        todolist() {
-            return this.$store.state.todo.todoList
-        }
-    },
-    methods: {
-        deleteTodo(id) {
-            this.$store.commit('deleteTodo', id)
-        },
-        changeTodo(done) {
-            this.$store.commit('changeTodo', done)
-        },
-        chartResize() {
-            this.chartHeight = document.getElementById("routerView").offsetHeight - 390;
-            setTimeout(() => {
-                this.chart.resize();
-            }, 20)
-        }
-    },
     watch: {
+        // 根据左侧菜单的展开与否调整图表大小
         isCollapse() {
             setTimeout(() => {
                 this.chart.resize();
             }, 220)
         },
+        // chartData变化时，更新echarts
         chartData() {
             this.chart.setOption({
                 series: [{

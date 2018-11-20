@@ -54,7 +54,7 @@
             loader: 'cache-loader',
             options: {
               cacheDirectory: 'D:\\test\\vue\\VUE-Admin\\node_modules\\.cache\\vue-loader',
-              cacheIdentifier: 'a3048ee2'
+              cacheIdentifier: '4db020f1'
             }
           },
           /* config.module.rule('vue').use('vue-loader') */
@@ -65,7 +65,7 @@
                 preserveWhitespace: false
               },
               cacheDirectory: 'D:\\test\\vue\\VUE-Admin\\node_modules\\.cache\\vue-loader',
-              cacheIdentifier: 'a3048ee2'
+              cacheIdentifier: '4db020f1'
             }
           }
         ]
@@ -1040,7 +1040,7 @@
             loader: 'cache-loader',
             options: {
               cacheDirectory: 'D:\\test\\vue\\VUE-Admin\\node_modules\\.cache\\babel-loader',
-              cacheIdentifier: '328bf81a'
+              cacheIdentifier: '9efdf7ca'
             }
           },
           /* config.module.rule('js').use('babel-loader') */
@@ -1059,7 +1059,8 @@
       {
         'process.env': {
           NODE_ENV: '"development"',
-          BASE_URL: '"/"'
+          BASE_URL: '"/"',
+          PROD_URL: 'http://test.baidu.com'
         }
       }
     ),
