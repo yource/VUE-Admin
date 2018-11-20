@@ -13,12 +13,7 @@ module.exports = {
         }
     },
     chainWebpack: config => {
-        // 将测试环境ip混入webpakck变量
-        config.plugin('define').tap(args => {
-            args[0]['process.env'].PROD_URL = "'" + PROD_URL + "'";
-            return args;
-        });
-        // 启用mockjs
+        // 开发环境下，如果没有配置测试环境ip，则启用mockjs模拟接口返回
         if (process.env.NODE_ENV === 'development' && !PROD_URL) {
             config.entry('app').add('./src/mock/index.js')
         }

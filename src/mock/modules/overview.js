@@ -1,7 +1,5 @@
 import Mock from 'mockjs'
-Mock.setup({
-    timeout: '0-1600'
-})
+
 Mock.mock('/api/overview/chartData', {
     code:"0",
     info:"",
