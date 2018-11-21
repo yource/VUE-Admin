@@ -9,13 +9,28 @@
             <el-table-column label="操作" width="160">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline" style="font-size:16px;" title="编辑"></el-button>
-                    <el-button size="mini" plain type="danger" @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete" style="font-size:16px;" title="删除"></el-button>
+                    <el-button size="mini" @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete" style="font-size:16px;" title="删除" class="deleteBtn"></el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30]" :page-size="pageSize" :total="tableData.length" layout="total, sizes, prev, pager, next">
             </el-pagination>
+        </div>
+        <div class="asideDialogWrap" :visible="showDialog" @click="showDialog=false">
+            <div class="asideDialog">
+                <div class="asideDialogHeader">
+                    <div class="asideDialogTitle">
+                        <span>编辑资料</span>
+                        <span class="close"><i class="el-icon el-icon-close"></i></span>
+                    </div>
+                </div>
+                <div class="asideDialogBody"></div>
+                <div class="asideDialogBottom">
+                    <el-button type="primary" @click="showDialog = false">确 定</el-button>
+                    <el-button @click="showDialog = false" style="margin-right:20px;margin-left:20px;">取 消</el-button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -26,7 +41,8 @@ export default {
         return {
             tableData: [], //所有表格数据
             pageSize: 10,
-            currentPage: 1
+            currentPage: 1,
+            showDialog: true
         }
     },
     computed: {
@@ -81,5 +97,70 @@ export default {
 
 .el-pagination {
     float: right;
+}
+
+.deleteBtn:hover {
+    color: #f56c6c;
+    border-color: #fbc4c4;
+    background: #fef0f0;
+}
+
+.asideDialogWrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 99;
+
+    .asideDialog {
+        width: 420px;
+        background: #fff;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        box-shadow: 0 0 15px #999;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+
+        .asideDialogHeader {
+            background: #f1f7f6;
+            font-size: 16px;
+            line-height: 40px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+
+            .close {
+                float: right;
+                font-size: 20px;
+                cursor: pointer;
+                color: #999;
+
+                &:hover {
+                    color: #ff690e;
+                }
+            }
+        }
+
+        .asideDialogBody {
+            height: calc(100% - 100px);
+            padding: 15px;
+        }
+
+        .asideDialogBottom {
+            text-align: right;
+            height: 60px;
+            padding-top: 14px;
+            border-top: 1px solid #dedede;
+
+            .el-button {
+                padding: 8px 12px;
+            }
+        }
+    }
 }
 </style>
