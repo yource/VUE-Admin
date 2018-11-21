@@ -1,19 +1,22 @@
 <template>
     <div class="tableShow">
-        <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-            <el-table-column label="操作">
+        <el-table :data="showData" stripe style="width: 100%" :border="true" @selection-change="handleSelectionChange" @sort-change="handleSortChange">
+            <el-table-column type="selection" width="36"></el-table-column>
+            <el-table-column prop="date" label="日期" width="165" sortable="custom"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="165" sortable="custom"></el-table-column>
+            <el-table-column prop="address" label="地址"></el-table-column>
+            <el-table-column prop="email" label="邮箱"></el-table-column>
+            <el-table-column label="操作" width="160">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline" style="font-size:16px;" title="编辑"></el-button>
+                    <el-button size="mini" plain type="danger" @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete" style="font-size:16px;" title="删除"></el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30]" :page-size="pageSize" :total="tableData.length" layout="total, sizes, prev, pager, next">
+            </el-pagination>
+        </div>
     </div>
 </template>
 <script>
@@ -21,24 +24,62 @@ export default {
     name: 'tableShow',
     data() {
         return {
-            tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }]
+            tableData: [], //所有表格数据
+            pageSize: 10,
+            currentPage: 1
         }
+    },
+    computed: {
+        showData() { //当前分页展示的数据
+            return this.tableData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
+        }
+    },
+    methods: {
+        handleSelectionChange() {},
+        // 自定义排序方法，ascending/descending
+        handleSortChange(sort) {
+            this.tableData.sort((a, b) => {
+                if (sort.order == "ascending") {
+                    return a[sort.prop] > b[sort.prop] ? 1 : -1;
+                } else {
+                    return a[sort.prop] < b[sort.prop] ? 1 : -1;
+                }
+            })
+        },
+        // 改变分页大小
+        handleSizeChange(val) {
+            this.pageSize = val;
+        },
+        // 翻页
+        handleCurrentChange(val) {
+            this.currentPage = val;
+        }
+    },
+    created() {
+        this.$ajax.get("/api/table/tableData").then((response) => {
+            response = response.data;
+            if (response.code == 0) {
+                this.tableData = response.data;
+            } else {
+                this.$notify.error({ title: "错误", message: '表格数据请求失败' })
+            }
+        }).catch((error) => {
+            this.$notify.error({ title: "错误", message: '表格数据请求失败' })
+        })
     }
 }
 </script>
+<style scoped lang="scss">
+.tableShow {
+    padding: 20px;
+}
+
+.pagination {
+    margin-top: 20px;
+    height: 30px;
+}
+
+.el-pagination {
+    float: right;
+}
+</style>
