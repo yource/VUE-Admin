@@ -61,3 +61,7 @@ html,body{
 .routerView .el-scrollbar__view {
     min-height: 100%;
 }
+
+.el-table td{
+    padding:8px 0;
+}
