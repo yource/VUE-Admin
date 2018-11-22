@@ -12,3 +12,7 @@ Mock.mock('/api/table/tableData', {
     	address: '@CITY(true)'
     }]
 })
+Mock.mock('/api/table/edit', {
+    code:"0",
+    info:""
+})
