@@ -49,6 +49,8 @@ module.exports = {
 
 ![overview](https://raw.githubusercontent.com/yource/Vue-Admin-System/master/src/assets/images/overview.jpg)
 
+![table](https://raw.githubusercontent.com/yource/Vue-Admin-System/master/src/assets/images/table.png)
+
 
 
 
