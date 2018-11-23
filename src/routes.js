@@ -9,7 +9,7 @@ const routes = [{
 }, {
     path: '/table',
     name: 'table',
-    name_cn: "表格展示",
+    name_cn: "表格综合",
     icon: "icon-biaoge",
     rightLevel: 0,
     component: () => import( /* webpackChunkName: "table" */ './views/table.vue')

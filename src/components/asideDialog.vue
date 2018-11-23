@@ -2,7 +2,7 @@
     <transition name="asidedialog-fade">
         <div class="asideDialogWrap" v-show="show" @click.self="show=false">
             <div class="asideDialogMask" v-if="mask" @click.self="show=false"></div>
-            <div class="asideDialog">
+            <div class="asideDialog" :style="{width: width+'px','box-shadow': mask?'none':'rgb(126, 128, 134) 0px 0px 25px' }" >
                 <div class="asideDialogHeader">
                     <div class="asideDialogTitle">
                         <span>{{title}}</span>
@@ -35,6 +35,10 @@ export default {
         title: {
             type: String,
             default: "详情"
+        },
+        width: {
+            type: Number,
+            default: 420
         }
     },
     data() {
@@ -80,7 +84,6 @@ export default {
     }
 
     .asideDialog {
-        width: 420px;
         background: #fff;
         position: absolute;
         overflow: hidden;
@@ -89,7 +92,6 @@ export default {
         bottom: 0;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
-        box-shadow: 0 0 20px #333;
 
         .asideDialogHeader {
             font-size: 15px;
