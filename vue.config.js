@@ -1,4 +1,4 @@
-// 测试环境的ip，默认为""
+// 测试环境的域名，默认为""
 const PROD_URL = "";
 
 module.exports = {
